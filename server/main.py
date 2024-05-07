@@ -28,6 +28,6 @@ async def route_get_country():
     return await get_country()
 
 
-@app.get("/df_realese")
+@app.get("/df_release")
 async def route_get_realese():
     return await get_realese()

@@ -41,9 +41,26 @@
                 .then(response => response.json())
                 .then(fetchData => {
                     console.log(fetchData);
-                    let dataArray = [['Rating', 'Cantidad']];
+                    let dataArray = [['Rating', 'Cantidad', { role: 'style' }]]; // Añade una tercera columna para el estilo
+                    let colorMap = { // Crea un objeto que mapee cada rating a un color
+                        'TV-MA': '#000000',
+                        'TV-14': '#2F4F4F',
+                        'TV-PG': '#696969',
+                        'R': '#800000',
+                        'PG-13': '#8B4513',
+                        'TV-Y': '#00FFFF',
+                        'TV-Y7': '#ADFF2F',
+                        'PG': '#7CFC00',
+                        'TV-G': '#00FF00',
+                        'NR': '#A9A9A9',
+                        'G': '#00FA9A',
+                        'TV-Y7-FV': '#00FFFF',
+                        'UR': '#A9A9A9',
+                        'NC-17': '#0000FF'
+                    };
                     fetchData.forEach(item => {
-                        dataArray.push([item.xi, item.fi]);
+                        let color = colorMap[item.xi]; // Obtiene el color para este rating
+                        dataArray.push([item.xi, item.fi, color]); // Añade el color a la fila de datos
                     });
 
                     let data = google.visualization.arrayToDataTable(dataArray);
@@ -88,7 +105,7 @@
                 });
         }
         function drawReleaseChart() {
-            fetch('http://localhost:8000/df_realese')
+            fetch('http://localhost:8000/df_release')
                 .then(response => response.json())
                 .then(fetchData => {
                     console.log(fetchData);
