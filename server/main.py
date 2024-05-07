@@ -1,10 +1,7 @@
-import pandas as pd
-from typing import Any, Dict
 from fastapi import FastAPI
 from controllers import get_category, get_country, get_rating, get_realese
-app = FastAPI()
 
-df = pd.read_csv('netflix.csv')
+app = FastAPI()
 
 @app.get("/df_rating")
 async def route_get_rating():
