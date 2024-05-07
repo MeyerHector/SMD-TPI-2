@@ -86,8 +86,7 @@ async def get_realese() -> Dict[str, Any]:
 
 
 async def get_realese() -> Dict[str, Any]:
-    df['Release_Date'] = df['Release_Date'].str.strip()
-
+    df['Release_Date'] = df['Release_Date'].astype(str).str.strip()
     # convierte la columna 'Release_Date' a datetime
     df['Release_Date'] = pd.to_datetime(df['Release_Date'])
 

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawCategoryChart);
+        google.charts.setOnLoadCallback(drawRatingChart);
+        google.charts.setOnLoadCallback(drawCountryChart);
+        google.charts.setOnLoadCallback(drawReleaseChart);
+
+
+        function drawCategoryChart() {
+            fetch('http://localhost:8000/df_category')
+                .then(response => response.json())
+                .then(fetchData => {
+                    console.log(fetchData);
+                    let dataArray = [['Categorias', 'Porcentaje']];
+                    fetchData.forEach(item => {
+                        dataArray.push([item.xi, item.pi]);
+                    });
+
+                    let data = google.visualization.arrayToDataTable(dataArray);
+
+                    const options = {
+                        title: 'Categorias'
+                    };
+
+                    let chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                    chart.draw(data, options);
+                });
+        }
+
+        function drawRatingChart() {
+            fetch('http://localhost:8000/df_rating')
+                .then(response => response.json())
+                .then(fetchData => {
+                    console.log(fetchData);
+                    let dataArray = [['Rating', 'Cantidad']];
+                    fetchData.forEach(item => {
+                        dataArray.push([item.xi, item.fi]);
+                    });
+
+                    let data = google.visualization.arrayToDataTable(dataArray);
+
+                    const options = {
+                        title: 'Ratings',
+                        legend: { position: 'none' },
+                        hAxis: {
+                            title: 'Cantidad'
+                        },
+                        vAxis: {
+                            title: 'Rating'
+                        }
+                    };
+
+                    let chart = new google.visualization.BarChart(document.getElementById('barchart'));
+
+                    chart.draw(data, options);
+                });
+        }
+
+        function drawCountryChart() {
+            fetch('http://localhost:8000/df_country')
+                .then(response => response.json())
+                .then(fetchData => {
+                    console.log(fetchData);
+                    let dataArray = [['Pais', 'Porcentajes']];
+                    fetchData.forEach(item => {
+                        dataArray.push([item.xi, item.pi]);
+                    });
+
+                    let data = google.visualization.arrayToDataTable(dataArray);
+
+                    const options = {
+                        title: 'Distribucion en paises',
+                        is3D: true,
+                    };
+
+                    let chart = new google.visualization.PieChart(document.getElementById('piechart_country'));
+
+                    chart.draw(data, options);
+                });
+        }
+        function drawReleaseChart() {
+            fetch('http://localhost:8000/df_realese')
+                .then(response => response.json())
+                .then(fetchData => {
+                    console.log(fetchData);
+                    let dataArray = [['Año de lanzamiento', 'Frecuencia']];
+                    fetchData.forEach(item => {
+                        dataArray.push([item.xi.toString(), item.fi]);
+                    });
+
+                    let data = google.visualization.arrayToDataTable(dataArray);
+
+                    const options = {
+                        title: 'Distribución en los años de lanzamiento',
+                        hAxis: { title: 'Año' },
+                        vAxis: { title: 'Cantidad de peliculas' },
+                        legend: 'none',
+                    };
+
+                    let chart = new google.visualization.ColumnChart(document.getElementById('columnchart_release'));
+
+                    chart.draw(data, options);
+                });
+        }
+    </script>
+</head>
+
+<body style="display: flex;">
+    <div style="padding: 10px;">
+        <div id="piechart"
+            style="width: 737px; height: 368px; border: 2px black solid; border-radius: 3px; margin-bottom: 10px;">
+        </div>
+        <div id="barchart" style="width: 737px; height: 368px; border: 2px black solid;  border-radius: 3px;"></div>
+    </div>
+    <div style="padding: 10px; padding-left: 0;">
+        <div id="columnchart_release"
+            style="width: 737px; height: 368px; border: 2px black solid;  border-radius: 3px; margin-bottom: 10px;">
+        </div>
+        <!-- Nueva línea -->
+        <div id="piechart_country" style="width: 737px; height: 368px; border: 2px black solid;  border-radius: 3px;">
+        </div>
+    </div>
+
+</body>
+
+</html>
